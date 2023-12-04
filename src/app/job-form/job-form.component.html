@@ -1,0 +1,91 @@
+
+<div class="job-form-container">
+   <h2>Job Form</h2>
+  <form [formGroup]="jobForm" (ngSubmit)="submitForm()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="jobTitle">Job Title</label>
+        <input type="text" id="jobTitle" formControlName="jobTitle">
+        <div class="error" *ngIf="jobForm.get('jobTitle')?.hasError('required') && jobForm.get('jobTitle')?.touched">
+          Job Title is required.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="jobDuration">Job Duration (in months)</label>
+        <input type="number" id="jobDuration" formControlName="jobDuration">
+        <div class="error" *ngIf="jobForm.get('jobDuration')?.hasError('required') && jobForm.get('jobDuration')?.touched">
+          Job Duration is required.
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+
+    <div class="form-group">
+      <label for="expiry">Expiry Date</label>
+      <input type="date" id="expiry" formControlName="expiry">
+      <div class="error" *ngIf="jobForm.get('expiry')?.hasError('required') && jobForm.get('expiry')?.touched">
+        Job Expiry is required.
+      </div>
+    </div>
+      <div class="form-group">
+    <label for="jobType">Job Type</label>
+      <select id="jobType" formControlName="jobType">
+        <option value="fullTime">Full Time</option>
+        <option value="partTime">Part Time</option>
+      </select> 
+      <div class="error" *ngIf="jobForm.get('jobType')?.hasError('required') && jobForm.get('jobType')?.touched">
+        Job Type is required.
+      </div>
+</div>
+</div>
+
+    <div formArrayName="sections">
+      <div *ngFor="let section of sections.controls; let sectionIndex = index">
+        <div [formGroupName]="sectionIndex">
+          <div class="section-header">
+            <label for="name">Section Name</label>
+            <button class="remove-section" type="button" (click)="removeSection(sectionIndex)">Remove Section</button>
+          </div>
+          <div class="form-group">
+          <input type="text" id="name" formControlName="name">
+          <div class="error" *ngIf="section.get('name')?.hasError('required') && section.get('name')?.touched">
+            Section Name is required.
+          </div>
+          </div>
+          <div formArrayName="fields">
+            <div *ngFor="let field of getFields(section).controls; let fieldIndex = index">
+              <div [formGroupName]="fieldIndex">
+                <div class="field-header">
+                  <button class="remove-section" type="button" (click)="removeField(sectionIndex, fieldIndex)">Remove
+                    Field</button>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="fieldName"> Field Name</label>
+                    <input type="text" id="fieldName" formControlName="name">
+                    <div class="error" *ngIf="field.get('name')?.hasError('required') && field.get('name')?.touched">
+                      Section Name is required.
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="fieldValue">Field Value </label>
+                    <input type="text" id="fieldValue" formControlName="value">
+                    <div class="error" *ngIf="field.get('name')?.hasError('required') && field.get('name')?.touched">
+                      Section Name is required.
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" (click)="addField(sectionIndex)">Add Field</button>
+        </div>
+      </div>
+    </div>
+    <div class="section-header">
+      <button type="button" (click)="addSection()" >Add Section</button>
+      <button type="submit" [disabled]="jobForm.invalid" class="submit-button">Submit</button>
+    </div>
+  </form>
+</div>
